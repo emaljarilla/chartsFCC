@@ -31,3 +31,7 @@ Thumbs.db
 
 #logs
 *.log
+
+#others
+data/
+old/
