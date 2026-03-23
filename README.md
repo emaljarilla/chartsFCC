@@ -28,7 +28,7 @@ Dashboard interactivo de análisis de datos para organización de servicios soci
 ## Instalación
 
 ```bash
-git clone https://github.com/emaljarilla/chartsFCC.git
+git clone https://github.com/user/chartsFCC.git
 cd chartsFCC
 pip install -r requirements.txt
 ```
