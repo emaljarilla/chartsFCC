@@ -21,22 +21,22 @@ def load_csv(file_path: Union[str, Path])-> pd.DataFrame:
         raise ValueError(f"Error loading CSV: {e}")#lo que nos dice que existe un error indeterminado y nos idica que tipo de error hay
     return df
 
-def process_dates(df:pd.DataFrame)-> pd.DataFrame:
+def process_dates(df:pd.DataFrame,date_columns = ["f_nacimiento", "fecha"])-> pd.DataFrame:
     #convertimos las fechas con una validacion
-    date_columns = ["Fecha de nacimiento", "Fecha"]
+    
     for col in date_columns:
         try:
-            df[col]=pd.to_datetime(df[col], format="%d/%m/%Y")
+            df[col]=pd.to_datetime(df[col], format="mixed")
         except Exception as e:
             raise ValueError(f"Invalid date format in {col}: {e}")
     return df
 
 def calculate_age(df: pd.DataFrame)->pd.DataFrame:
     #calculamos la edad exacta considerando el mes y el día
-    df['Edad']=df['Fecha'].dt.year - df['Fecha de nacimiento'].dt.year
-    df['Edad']=((df['Fecha'].dt.month < df['Fecha de nacimiento'].dt.month) | 
-                ((df['Fecha'].dt.month == df['Fecha de nacimiento'].dt.month) &
-                (df['Fecha'].dt.day < df['Fecha de nacimiento'].dt.day)))
+    df['Edad']=df["fecha"].dt.year - df['f_nacimiento'].dt.year
+    df['Edad']-=((df["fecha"].dt.month < df['f_nacimiento'].dt.month) | 
+                ((df["fecha"].dt.month == df['f_nacimiento'].dt.month) &
+                (df["fecha"].dt.day < df['f_nacimiento'].dt.day))).astype(int)
     return df
 
 def create_age_groups(df:pd.DataFrame)->pd.DataFrame:
