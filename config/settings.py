@@ -3,7 +3,7 @@
 from pathlib import Path
 
 #Rutas: Creamos unas varialbes que consideraremos constantes, para que si cambian las rutas solo tengas que venir a cambiarlas aqui
-BASE_DIR =  Path(__file__).parent
+BASE_DIR =  Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "data"
 CEPAIM_CSV = DATA_DIR / "cepaim.csv"
 SHAPEFILE_ZIP = DATA_DIR / "comunidad_autonoma.zip"
