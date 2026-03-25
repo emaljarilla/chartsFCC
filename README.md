@@ -32,6 +32,12 @@ git clone https://github.com/user/chartsFCC.git
 cd chartsFCC
 pip install -r requirements.txt
 ```
+## Forma de trabajo
+```bash
+$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+```
 
 ## Ejecución
 
