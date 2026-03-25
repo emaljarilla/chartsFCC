@@ -51,15 +51,18 @@ def create_age_groups(df:pd.DataFrame)->pd.DataFrame:
 
 def map_sex(df: pd.DataFrame) -> pd.DataFrame:
     #Mapeo de sexo segun codigo
-    df['Sexo_mapped']=df['Sexo'].map({'H':'Hombre','M':'Mujer'})
+    df['Sexo_mapped']=df['sexo'].map({'H':'Hombre','M':'Mujer'})
     return df
 
 def map_vulnerability(df: pd.DataFrame) -> pd.DataFrame:
     #Mapa de vulnerabilidades segun codigo
     def _map(val):
-        if(str(val).strip().lower() in  ['si','sí','Si','Sí','SI','SÍ','1','vulnerable','true','yes','y','Yes''Y','YES']):
+        if(str(val).strip().lower() in  ['si','sí','1','vulnerable','true','yes','y','ye']):
             return 'Vulnerable'
-        return 'No vulnerable'
+        elif (str(val).strip().lower() in  ['no','0','no vulnerable','false']):
+            return 'No vulnerable'
+        else:
+            return 'No definido'
     
     df['vulnerable_label']=df['Vulnerable'].apply(_map)
     return df
