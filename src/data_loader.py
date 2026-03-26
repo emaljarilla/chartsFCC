@@ -58,13 +58,13 @@ def map_vulnerability(df: pd.DataFrame) -> pd.DataFrame:
     #Mapa de vulnerabilidades segun codigo
     def _map(val):
         if(str(val).strip().lower() in  ['si','sí','1','vulnerable','true','yes','y','ye']):
-            return 'Vulnerable'
+            return 'vulnerable'
         elif (str(val).strip().lower() in  ['no','0','no vulnerable','false']):
             return 'No vulnerable'
         else:
             return 'No definido'
     
-    df['vulnerable_label']=df['Vulnerable'].apply(_map)
+    df['vulnerable_label']=df['vulnerable'].apply(_map)
     return df
 
 def load_geodata()-> Tuple[dict,gpd.GeoDataFrame]:

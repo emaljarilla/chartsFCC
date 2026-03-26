@@ -1,10 +1,12 @@
 import pytest
 import pandas as pd
 import geopandas as gpd
-from pathlib import Path
+import plotly.graph_objects as go
 
-from src.data_loader import load_csv, process_dates, calculate_age, create_age_groups, map_sex, map_vulnerability,load_geodata
+from pathlib import Path
+from src.data_loader import load_csv, process_dates, calculate_age, create_age_groups, map_sex, map_vulnerability,load_geodata, load_full_data
 from config.settings import CEPAIM_CSV
+from src.charts import create_bar_chart, create_donut_chart
 # test 1
 def test_load_csv_con_ruta_valida_devuelve_dataframe():
     """
@@ -86,6 +88,23 @@ def test_calculate_age_no_cumple():
     edad=df["fecha"].dt.year - df['f_nacimiento'].dt.year
     df=calculate_age(df)
     assert df['Edad'].iloc[0] != edad.iloc[0]
+#test9.1
+def test_calculate_age_multiples_personas():
+    df=pd.DataFrame({
+        'f_nacimiento':['15/12/1990','15/01/1990','15/12/1990','15/06/1990','15/07/1990'],
+        'fecha':['15/12/2025','15/12/2025','15/01/2025','15/07/2025','15/05/2025']
+    })
+    df['f_nacimiento']=pd.to_datetime(df['f_nacimiento'], format="mixed")
+    df['fecha']=pd.to_datetime(df['fecha'], format="mixed")
+    df=calculate_age(df)
+    assert df['Edad'].iloc[0] == 35
+    assert df['Edad'].iloc[1] == 35
+    assert df['Edad'].iloc[2] < 35
+    assert df['Edad'].iloc[2] == 34
+    assert df['Edad'].iloc[3] == 35
+    assert df['Edad'].iloc[4] < 35
+    assert df['Edad'].iloc[4] == 34
+
 
 # test 10
 def test_create_age_groups_asigna_bines_correctamente():
@@ -100,6 +119,14 @@ def test_create_age_groups_asigna_bines_correctamente():
     assert df.loc[df['Edad'] == 55, 'grupo_etario'].iloc[0] == '50-59'
     assert df.loc[df['Edad'] == 90, 'grupo_etario'].iloc[0] == '60 y más'
 
+#text 10.1
+def test_create_age_groups_60_mas_incluye_todos():
+    df=pd.DataFrame({'Edad':[60,70,80,90,100,120,130,160]})
+   
+    df = create_age_groups(df)
+    for edad in [60, 70, 80, 90, 100, 120]:
+        grupo = df.loc[df['Edad'] == edad, 'grupo_etario'].iloc[0]
+        assert grupo == '60 y más', f"Edad {edad} debería estar en '60 y más'"
  # test 11
 def test_map_sex_h_devuelve_hombre():
     df=pd.DataFrame({'sexo':['H']})
@@ -133,29 +160,63 @@ def test_map_sex_h_devuelve_multiples():
 
 #test 14
 def test_map_vulnerability_todas_las_variantes_de_si():
-    df=pd.DataFrame({'Vulnerable':['si']})
+    df=pd.DataFrame({'vulnerable':['si']})
     resultado=map_vulnerability(df)
-    assert resultado['vulnerable_label'].iloc[0]=="Vulnerable"
+    assert resultado['vulnerable_label'].iloc[0]=="vulnerable"
 #test 15
 def test_map_vulnerability_todas_las_variantes_de_no():
-    df=pd.DataFrame({'Vulnerable':['no']})
+    df=pd.DataFrame({'vulnerable':['no']})
     resultado=map_vulnerability(df)
     assert resultado['vulnerable_label'].iloc[0]=="No vulnerable"
 #test 14
 def test_map_vulnerability_todas_las_variantes():
-    df=pd.DataFrame({'Vulnerable':['0','is','nO','false','fAlSe','1']})
+    df=pd.DataFrame({'vulnerable':['0','is','nO','false','fAlSe','1']})
     resultado=map_vulnerability(df)
     assert resultado['vulnerable_label'].iloc[0]=='No vulnerable'
     assert resultado['vulnerable_label'].iloc[1]=='No definido'
     assert resultado['vulnerable_label'].iloc[2]=='No vulnerable'
     assert resultado['vulnerable_label'].iloc[3]=='No vulnerable'
     assert resultado['vulnerable_label'].iloc[4]=='No vulnerable'
-    assert resultado['vulnerable_label'].iloc[5]=="Vulnerable"
-
+    assert resultado['vulnerable_label'].iloc[5]=="vulnerable"
+def test_map_vulnerability_con_espacios():
+    df=pd.DataFrame({'vulnerable':['0 ',' is',' nO ','     false ','  fAlSe         ','   1                                 ']})
+    resultado=map_vulnerability(df)
+    assert resultado['vulnerable_label'].iloc[0]=='No vulnerable'
+    assert resultado['vulnerable_label'].iloc[1]=='No definido'
+    assert resultado['vulnerable_label'].iloc[2]=='No vulnerable'
+    assert resultado['vulnerable_label'].iloc[3]=='No vulnerable'
+    assert resultado['vulnerable_label'].iloc[4]=='No vulnerable'
+    assert resultado['vulnerable_label'].iloc[5]=="vulnerable"
 #test 15
-def test_load_geodatos():
+def test_load_geodata_devuelve_dos_elementos():
     geojson, gdf = load_geodata()
     assert isinstance(geojson, dict)
     assert isinstance(gdf, gpd.GeoDataFrame)
 
+#test 16
+def test_load_geodata_geojson_tiene_features():
+    geojson, gdf = load_geodata()
+    assert 'features' in geojson
+    assert len(geojson['features']) > 0
+ 
+#test 17
+def test_load_full_data_devuelve_tres_elemenos():
+    df, geojson, gdf = load_full_data()
+    assert isinstance(df, pd.DataFrame) 
+    assert isinstance(geojson, dict)
+    assert isinstance(gdf, gpd.GeoDataFrame)
+#test 18
+def test_load_geodata_geojson_tiene_geometrias():
+    geojson, gdf = load_geodata()
+    assert 'geometry' in gdf
+    assert gdf.geometry.iloc[0] is not None
+#test 19
+def test_load_full_data_crea_columnas_derivadas():
+    geojson, gdf = load_geodata()
     
+#test 20
+
+#test 21
+
+#test 22
+
