@@ -39,6 +39,11 @@ $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
+## Test
+```bash
+pip install -r requirements.txt
+```
+
 ## Ejecución
 
 ```bash
