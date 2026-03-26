@@ -21,6 +21,11 @@ Dashboard interactivo de análisis de datos para organización de servicios soci
 │   └── settings.py       # Configuración centralizada
 ├── test/
 │   └── test_data_loader.py  # Tests unitarios
+├── docs/
+│   ├── Aprendizaje.md    # Documentación de aprendizaje consolidada
+│   ├── Diseno.md         # Plan de diseño y desarrollo
+│   └── Registro_Trabajo.md # Registro diario de trabajo
+├── old/                  # Código legacy (no utilizado)
 ├── requirements.txt
 └── README.md
 ```
@@ -28,27 +33,30 @@ Dashboard interactivo de análisis de datos para organización de servicios soci
 ## Instalación
 
 ```bash
-git clone https://github.com/user/chartsFCC.git
+git clone https://github.com/emaljarilla/chartsFCC.git
 cd chartsFCC
-pip install -r requirements.txt
-```
-## Forma de trabajo
-```bash
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ pip install -r requirements.txt
-```
-
-## Test
-```bash
+python3 -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
 ## Ejecución
 
 ```bash
-streamlit run src/app.py
+# Dashboard con Streamlit (legacy)
+streamlit run old/proyecto_cepaim_2.py
+
+# Tests
+pytest -v
 ```
+
+## Documentación
+
+- **`CONTINUAR.md`** - Punto de entrada para continuar trabajo (usa "continuamos")
+- **`docs/Aprendizaje.md`** - Plan de aprendizaje, examen diagnóstico, guía de testing
+- **`docs/Diseno.md`** - Arquitectura, fases de desarrollo, plan de gráficos
+- **`docs/Registro_Trabajo.md`** - Registro diario del progreso
+- **`AGENTS.md`** - Guía técnica para asistentes de IA
 
 ## Datos
 

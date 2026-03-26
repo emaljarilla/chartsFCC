@@ -25,7 +25,7 @@ def create_donut_chart(
             labels=conteo['Label'],
             values=conteo['Total'],
             hole=0.40,
-            marker=dict(color=[color.get(l,COLORS['primary'])for l in conteo['Label']]),
+            marker=dict(colors=[color.get(l,COLORS['primary'])for l in conteo['Label']]),
             textinfo='label+percent',
             hovertemplate='%{label}<br>Total: %{value}<br>%{percent}'
         )]

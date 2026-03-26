@@ -212,10 +212,27 @@ def test_load_geodata_geojson_tiene_geometrias():
     assert gdf.geometry.iloc[0] is not None
 #test 19
 def test_load_full_data_crea_columnas_derivadas():
-    geojson, gdf = load_geodata()
-    
+      """load_full_data crea las columnas Edad, grupo_etario, 
+         Sexo_mapped, vulnerable_label."""
+      df, geojson, gdf = load_full_data()
+      
+      columnas_derivadas = ['Edad', 'grupo_etario', 'Sexo_mapped', 'vulnerable_label']
+      for col in columnas_derivadas:
+          assert col in df.columns, f"Falta la columna derivada '{col}'"
 #test 20
+def test_load_full_data_crea_columnas_derivadas_2():
+      df, geojson, gdf = load_full_data()
+      assert "Edad" in df.columns
+      assert len(df['Edad'])>0
 
+      assert "grupo_etario" in df.columns
+      assert len(df['grupo_etario'])>0
+
+      assert "Sexo_mapped" in df.columns
+      assert len(df['Sexo_mapped'])>0
+
+      assert "vulnerable_label" in df.columns
+      assert len(df['vulnerable_label'])>0
 #test 21
 
 #test 22
