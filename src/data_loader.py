@@ -58,13 +58,20 @@ def map_vulnerability(df: pd.DataFrame) -> pd.DataFrame:
     #Mapa de vulnerabilidades segun codigo
     def _map(val):
         if(str(val).strip().lower() in  ['si','sí','1','vulnerable','true','yes','y','ye']):
-            return 'vulnerable'
+            return 'Vulnerable'
         elif (str(val).strip().lower() in  ['no','0','no vulnerable','false']):
             return 'No vulnerable'
         else:
             return 'No definido'
     
     df['vulnerable_label']=df['vulnerable'].apply(_map)
+    return df
+
+def create_time_columns(df: pd.DataFrame) -> pd.DataFrame:
+    df['año'] = df['fecha'].dt.year
+    df['trimestre'] = df['fecha'].dt.quarter
+    df['mes'] = df['fecha'].dt.month
+    df['mes_nombre'] = df['fecha'].dt.strftime('%B')
     return df
 
 def load_geodata()-> Tuple[dict,gpd.GeoDataFrame]:
@@ -90,6 +97,7 @@ def load_full_data()-> Tuple[pd.DataFrame,dict,gpd.GeoDataFrame]:
     df = create_age_groups(df)
     df = map_sex(df)
     df = map_vulnerability(df)
+    df = create_time_columns(df)
     
     geojson,gdf=load_geodata()
     

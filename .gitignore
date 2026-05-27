@@ -5,7 +5,6 @@ __pycache__/
 *.so
 .Python
 venv/
-venv/
 ENV/
 .env
 
@@ -26,7 +25,7 @@ shapefile_cache/
 *.swo
 
 #os 
-.DS_stores
+.DS_store
 Thumbs.db
 
 #logs
@@ -35,3 +34,8 @@ Thumbs.db
 #others
 data/
 old/
+texts/
+AGENTS.md
+
+.ruff_cache/
+.mypu_cache/
