@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from typing import Tuple, Optional, List, Union
 from config.settings import (
-    CEPAIM_CSV, SHAPEFILE_ZIP, AGE_BINS, AGE_LABELS,CCAA_MAPPING
+    CEPAIM_CSV, SHAPEFILE_ZIP, AGE_BINS, AGE_LABELS,CCAA_MAPPING, VULNERABLE_MAP
 )
 
 def load_csv(file_path: Union[str, Path])-> pd.DataFrame:
@@ -56,15 +56,14 @@ def map_sex(df: pd.DataFrame) -> pd.DataFrame:
 
 def map_vulnerability(df: pd.DataFrame) -> pd.DataFrame:
     #Mapa de vulnerabilidades segun codigo
-    def _map(val):
-        if(str(val).strip().lower() in  ['si','sí','1','vulnerable','true','yes','y','ye']):
-            return 'Vulnerable'
-        elif (str(val).strip().lower() in  ['no','0','no vulnerable','false']):
-            return 'No vulnerable'
-        else:
-            return 'No definido'
-    
-    df['vulnerable_label']=df['vulnerable'].apply(_map)
+    df['vulnerable_label']=(
+        df['vulnerable']
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .map(VULNERABLE_MAP)
+        .fillna('No definido')
+    )   
     return df
 
 def create_time_columns(df: pd.DataFrame) -> pd.DataFrame:

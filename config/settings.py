@@ -7,7 +7,20 @@ BASE_DIR =  Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "data"
 CEPAIM_CSV = DATA_DIR / "cepaim.csv"
 SHAPEFILE_ZIP = DATA_DIR / "comunidad_autonoma.zip"
-
+VULNERABLE_MAP={
+    'si':'Vulnerable',
+    'sí':'Vulnerable',
+    '1':'Vulnerable',
+    'vulnerable':'Vulnerable',
+    'true':'Vulnerable',
+    'yes':'Vulnerable',
+    'y':'Vulnerable',
+    'ye':'Vulnerable',
+    'no':'No vulnerable',
+    '0':'No vulnerable',
+    'no vulnerable':'No vulnerable',
+    'false':'No vulnerable'
+}
 #colores institucionales si mañana cambian los colores institucionales o queremos reutilizar el codigo para otra organización solo debemos cambiar los colores de un sitio
 COLORS = {
     'primary':'#9d2d80',
@@ -20,7 +33,7 @@ COLORS = {
     },
     'vulnerability':{
         'Vulnerable':'#1c467e',
-        'No Vulnerable':'#96a9c4'
+        'No vulnerable':'#96a9c4'
     },
 }
 

@@ -17,13 +17,13 @@ print("*** TIPOS DE DATOS ***")
 print(df.dtypes)
 
 print("*** PRIMERAS 5 FILAS ***")
-print(df.head)
+print(df.head())
 
 print("*** VALORES UNICOS EN COLUMNAS CLAVE ***")
-columnas_a_revisar=['Sexo', 'Nacionalidad','Vulnerable','Comnidad Autónoma']
+columnas_a_revisar=['sexo', 'nacionalidad','vulnerable','comunidad']
 for col in columnas_a_revisar:
     if col in df.columns:
         print(f"\n{col}: {df[col].nunique()} valores unicos")
-        print(df[col].value_counts(),head())
+        print(df[col].value_counts().head())
     else:
         print(f"\n{col}: Columna NO ENCONTRADA")
